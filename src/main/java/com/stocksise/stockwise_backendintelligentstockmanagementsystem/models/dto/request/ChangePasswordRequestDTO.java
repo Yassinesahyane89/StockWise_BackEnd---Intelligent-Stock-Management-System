@@ -1,4 +1,4 @@
-package com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.response;
+package com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
