@@ -1,4 +1,4 @@
-package com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.response;
+package com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request;
 
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.User;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.enums.userStatus;
