@@ -1,7 +1,7 @@
 package com.stocksise.stockwise_backendintelligentstockmanagementsystem.services;
 
-import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.response.ChangePasswordRequestDTO;
-import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.response.UserRequestDTO;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request.ChangePasswordRequestDTO;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request.UserRequestDTO;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.User;
 
 import java.util.List;

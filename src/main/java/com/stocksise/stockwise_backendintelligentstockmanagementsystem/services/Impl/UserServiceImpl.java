@@ -2,8 +2,8 @@ package com.stocksise.stockwise_backendintelligentstockmanagementsystem.services
 
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.handlers.exceptionHandler.OperationException;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.handlers.exceptionHandler.ResourceNotFoundException;
-import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.response.ChangePasswordRequestDTO;
-import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.response.UserRequestDTO;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request.ChangePasswordRequestDTO;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request.UserRequestDTO;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.User;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.repositories.UserRepository;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.UserService;
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
         // check if user with email already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent() && !user.getEmail().equals(existingUser.getEmail())) {
-            throw new OperationException("User with email " + user.getEmail() + " already exists");
+            throw new OperationException("email " + user.getEmail() + " already exists");
         }
 
         // mapping userRequestDTO to user
