@@ -1,6 +1,7 @@
 package com.stocksise.stockwise_backendintelligentstockmanagementsystem.factory.fakers;
 
 import com.github.javafaker.Faker;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.Role;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.User;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.enums.userStatus;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,14 @@ public class UserFaker {
         this.faker = new Faker();
     }
 
-    public User create() {
+    public User create(Role role) {
         return User.builder()
                 .firstName(faker.name().firstName())
                 .lastName(faker.name().lastName())
                 .email(faker.internet().emailAddress())
                 .password(faker.internet().password())
                 .status(faker.options().option(userStatus.values()))
+                .role(role)
                 .build();
     }
 }

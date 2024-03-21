@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -32,13 +33,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private userStatus status;
 
+    @ManyToOne
+    private Role role;
+
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private Date updatedAt;
+    private LocalDate updatedAt;
+
 }

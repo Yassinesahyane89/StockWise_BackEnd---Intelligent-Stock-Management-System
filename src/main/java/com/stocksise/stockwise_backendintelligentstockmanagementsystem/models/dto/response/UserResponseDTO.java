@@ -13,6 +13,7 @@ public class UserResponseDTO {
     private Long id;
     private String fullName;
     private String email;
+    private String roleName;
     private userStatus status;
 
     // mapping the user object to the response object
@@ -22,6 +23,7 @@ public class UserResponseDTO {
                 .fullName(user.getFirstName() + " " + user.getLastName())
                 .email(user.getEmail())
                 .status(user.getStatus())
+                .roleName(user.getRole().getName())
                 .build();
 
     }
