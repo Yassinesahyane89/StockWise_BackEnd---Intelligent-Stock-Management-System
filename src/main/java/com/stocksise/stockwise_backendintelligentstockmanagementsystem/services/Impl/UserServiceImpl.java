@@ -3,10 +3,14 @@ package com.stocksise.stockwise_backendintelligentstockmanagementsystem.services
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.handlers.exceptionHandler.OperationException;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.handlers.exceptionHandler.ResourceNotFoundException;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request.ChangePasswordRequestDTO;
-import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request.UserRequestDTO;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.Role;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.User;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.enums.userStatus;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.repositories.UserRepository;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.RoleService;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +18,15 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public User getUserById(Long id) {
         return userRepository
@@ -31,9 +40,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         return userRepository
                 .findByEmail(email)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("User with email " + email + " not found")
-                );
+                .orElse(null);
     }
 
     @Override
@@ -42,27 +49,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(UserRequestDTO user) {
+    public User addUser(User user) {
         // check if user with email already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new OperationException("User with email " + user.getEmail() + " already exists");
         }
 
-        // generate a random password
-        String password = "password";
+        // set data
+        user.setStatus(user.getStatus());
 
-        // mapping userRequestDTO to user
-        User newUser = user.toUser();
-
-        // save password to user
-        newUser.setPassword(password);
+        // get role
+        if (user.getRole() == null) {
+            // set USER role if role is not provided
+            Role role = roleService.getRoleByName("USER");
+            user.setRole(role);
+        }else {
+            // get role by id
+            Role role = roleService.getRoleById(user.getRole().getId());
+            user.setRole(role);
+        }
 
         // save user to database
-        return userRepository.save(newUser);
+        return userRepository.save(user);
     }
 
     @Override
-    public User updateUser(UserRequestDTO user, Long id) {
+    public User updateUser(User user, Long id) {
         //get user by id
         User existingUser = getUserById(id);
 
@@ -71,17 +83,36 @@ public class UserServiceImpl implements UserService {
             throw new OperationException("email " + user.getEmail() + " already exists");
         }
 
-        // mapping userRequestDTO to user
-        User updatedUser = user.toUser();
-
-        // set id to the user
-        updatedUser.setId(id);
-
         // set password to the user
-        updatedUser.setPassword(existingUser.getPassword());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setRole(user.getRole());
+        existingUser.setStatus(user.getStatus());
+        existingUser.setPassword(user.getPassword());
 
         // save user to database
-        return userRepository.save(updatedUser);
+        return userRepository.save(existingUser);
+    }
+
+    // update profile
+    @Override
+    public User updateUserProfile(Long id, User user) {
+        //get user by id
+        User existingUser = getUserById(id);
+
+        // check if user with email already exists
+        if (userRepository.findByEmail(user.getEmail()).isPresent() && !user.getEmail().equals(existingUser.getEmail())) {
+            throw new OperationException("email " + user.getEmail() + " already exists");
+        }
+
+        // set new data
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+
+        // save user to database
+        return userRepository.save(existingUser);
     }
 
     @Override
@@ -90,7 +121,7 @@ public class UserServiceImpl implements UserService {
         User existingUser = getUserById(id);
 
         // check if old password is correct
-        if (!existingUser.getPassword().equals(changePasswordRequestDTO.getOldPassword())) {
+        if (!passwordEncoder.matches(changePasswordRequestDTO.getOldPassword(), existingUser.getPassword())) {
             throw new OperationException("Old password is incorrect");
         }
 
@@ -105,7 +136,8 @@ public class UserServiceImpl implements UserService {
         }
 
         // set new password
-        existingUser.setPassword(changePasswordRequestDTO.getNewPassword());
+        String encodedPassword = passwordEncoder.encode(changePasswordRequestDTO.getNewPassword());
+        existingUser.setPassword(encodedPassword);
 
         // save user to database
         return userRepository.save(existingUser);

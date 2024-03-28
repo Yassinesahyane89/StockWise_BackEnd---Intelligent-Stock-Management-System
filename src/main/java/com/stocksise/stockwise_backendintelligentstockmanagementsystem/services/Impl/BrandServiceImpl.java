@@ -8,6 +8,7 @@ import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -75,5 +76,10 @@ public class BrandServiceImpl implements BrandService {
 
         // delete the brand
         brandRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Brand> filterBrandsByStatus(String status) {
+        return brandRepository.findByStatus(Objects.equals(status, "ACTIVE"));
     }
 }

@@ -9,6 +9,7 @@ import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.en
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,45 +43,67 @@ public class UserRestController {
     // get user by id
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id){
-        return ResponseMessage.ok(UserResponseV2DTO.fromUser(userService.getUserById(id)), "Success");
+        // get user by id
+        User user = userService.getUserById(id);
+
+        //convert user to UserResponseV2DTO
+        UserResponseV2DTO userResponseV2DTO = UserResponseV2DTO.fromUser(user);
+
+        //return response
+        return ResponseMessage.ok(userResponseV2DTO, "Success");
     }
 
     // get user by email
     @GetMapping("/email/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable String email){
-        return ResponseEntity.ok(userService.getUserByEmail(email));
+        // get user by email
+        User user = userService.getUserByEmail(email);
+
+        //return response
+        return ResponseEntity.ok(user);
     }
 
     //add user
     @PostMapping("/new-user")
-    public ResponseEntity<?> addUser(@Valid @RequestBody UserRequestDTO user){
-        User newUser = userService.addUser(user);
-        return ResponseMessage
-                .created(UserResponseDTO.fromUser(newUser), "User added successfully");
+    public ResponseEntity<?> addUser(@Valid @RequestBody UserRequestDTO userRequestDTO){
+        // convert UserRequestDTO to User
+        User user = userRequestDTO.toUser();
+
+        // save user
+        user = userService.addUser(user);
+
+        // convert User to UserResponseDTO
+        UserResponseDTO userResponseDTO = UserResponseDTO.fromUser(user);
+
+        // return response
+        return ResponseMessage.created(userResponseDTO, "User added successfully");
 
     }
 
     //update user
     @PutMapping("/update-user/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id,@Valid @RequestBody UserRequestDTO user){
+    public ResponseEntity<?> updateUser(@PathVariable Long id,@Valid @RequestBody UserRequestDTO userRequestDTO){
+        // convert UserRequestDTO to User
+        User user = userRequestDTO.toUser();
+
+        // update user
         User updatedUser = userService.updateUser(user, id);
         if(updatedUser == null){
             return ResponseMessage.badRequest("User not updated");
         }else {
-            return ResponseMessage.created(UserResponseDTO.fromUser(updatedUser), "User updated successfully");
+            // convert User to UserResponseDTO
+            UserResponseDTO userResponseDTO = UserResponseDTO.fromUser(updatedUser);
+            return ResponseMessage.created(userResponseDTO, "User updated successfully");
         }
-    }
-
-    //update user password
-    @PutMapping("/update-password/{id}")
-    public ResponseEntity<?> updateUserPassword(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO, @PathVariable Long id){
-        return ResponseEntity.ok(userService.updateUserPassword(changePasswordRequestDTO, id));
     }
 
     //delete user
     @DeleteMapping("/delete-user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        // delete user
         userService.deleteUser(id);
+
+        // return response
         return ResponseMessage.ok(null, "User deleted successfully");
     }
 }

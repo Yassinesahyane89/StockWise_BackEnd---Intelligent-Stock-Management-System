@@ -81,6 +81,22 @@ public class BrandRestController {
         return ResponseMessage.ok(brandResponseDTO, "Brand updated successfully");
     }
 
+    // filter brands by status
+    @GetMapping("/filter-by-status/{status}")
+    public ResponseEntity<?> filterBrandsByStatus(@PathVariable String status) {
+        // get the brands by status
+        List<Brand> brands = brandService.filterBrandsByStatus(status);
+
+        // convert brands to brand response dto
+        List<BrandResponseDTO> brandResponseDTOS = new ArrayList<>();
+        for(Brand brand : brands) {
+            brandResponseDTOS.add(BrandResponseDTO.fromBrand(brand));
+        }
+
+        // return response
+        return ResponseMessage.ok(brandResponseDTOS, "Success");
+    }
+
     // delete brand
     @DeleteMapping("/delete-brand/{id}")
     public ResponseEntity<?> deleteBrand(@PathVariable Long id) {

@@ -1,5 +1,6 @@
 package com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.dto.request;
 
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.Role;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.User;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.enums.userStatus;
 import jakarta.validation.constraints.NotNull;
@@ -26,23 +27,22 @@ public class UserRequestDTO {
 
     @NotNull(message = "Status is required")
     //@Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Invalid status")
-    private userStatus status;
+    private String status;
+
+    @NotNull(message = "Status is required")
+    private Long roleId;
 
     public User toUser() {
         return User.builder()
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .email(this.email)
-                .status(this.status)
+                .status(userStatus.valueOf(status))
+                .role(
+                        Role.builder()
+                                .id(this.roleId)
+                                .build()
+                )
                 .build();
     }
-
-    // example of data to insert in postman
-//     {
-//         "firstName": "John",
-//         "lastName": "Doe",
-//         "email": "
-//         "password": "password",
-//         "status": "ACTIVE"
-//     }
 }

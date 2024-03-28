@@ -10,8 +10,12 @@ public interface UserService {
     User getUserById(Long id);
     User getUserByEmail(String email);
     List<User> getAllUsers();
-    User addUser(UserRequestDTO user);
-    User updateUser(UserRequestDTO user, Long id);
+    User addUser(User user);
+    User updateUser(User user, Long id);
+
+    // update profile
+    User updateUserProfile(Long id, User user);
+
     // change password
     User updateUserPassword(ChangePasswordRequestDTO changePasswordRequestDTO, Long id);
     void deleteUser(Long id);

@@ -15,6 +15,7 @@ public class UserResponseV2DTO {
     private String lastName;
     private String email;
     private userStatus status;
+    private Long roleId;
 
     // mapping the user object to the response object
     public static UserResponseV2DTO fromUser(User user) {
@@ -24,6 +25,7 @@ public class UserResponseV2DTO {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .status(user.getStatus())
+                .roleId(user.getRole().getId())
                 .build();
 
     }

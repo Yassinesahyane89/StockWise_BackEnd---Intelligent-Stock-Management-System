@@ -28,6 +28,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category getCategoryByName(String name) {
+        return categoryRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with name: " + name));
+    }
+
+    @Override
     public Category saveCategory(Category category) {
         // check the category name
         if (categoryRepository.findByName(category.getName()).isPresent()) {

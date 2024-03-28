@@ -10,4 +10,5 @@ public interface WarrantyService {
     Warranty createWarranty(Warranty warranty);
     Warranty updateWarranty(Long id,Warranty warranty);
     void deleteWarranty(Long id);
+    List<Warranty> filterWarrantyByStatus(String status);
 }

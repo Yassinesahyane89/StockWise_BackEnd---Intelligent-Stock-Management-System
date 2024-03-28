@@ -1,6 +1,7 @@
 package com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.Impl;
 
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.handlers.exceptionHandler.ResourceNotFoundException;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.Category;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.SubCategory;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.repositories.SubCategoryRepository;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.CategoryService;
@@ -110,6 +111,13 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
         // update the subCategory
         subCategoryToUpdate.setSubCategoryName(subCategory.getSubCategoryName());
+
+        // set category
+        Category category = categoryService.getCategoryById(subCategory.getParentCategory().getId());
+        subCategoryToUpdate.setParentCategory(category);
+
+        // set description
+        subCategoryToUpdate.setDescription(subCategory.getDescription());
 
         // save the subCategory
         return subCategoryRepository.save(subCategoryToUpdate);

@@ -81,6 +81,22 @@ public class UnitRestController {
         return ResponseMessage.ok(unitResponseDTO, "Unit updated successfully");
     }
 
+    // filter unit by status
+    @GetMapping("/filter-by-status/{status}")
+    public ResponseEntity<?> filterUnitByStatus(@PathVariable String status) {
+        // get the unit by status
+        List<Unit> units = unitService.filterUnitByStatus(status);
+
+        // convert unit to unit response dto
+        List<UnitResponseDTO> unitResponseDTOS = new ArrayList<>();
+        for(Unit unit : units) {
+            unitResponseDTOS.add(UnitResponseDTO.fromUnit(unit));
+        }
+
+        // return response
+        return ResponseMessage.ok(unitResponseDTOS, "Success");
+    }
+
     // delete unit
     @DeleteMapping("/delete-unit/{id}")
     public ResponseEntity<?> deleteUnit(@PathVariable Long id) {

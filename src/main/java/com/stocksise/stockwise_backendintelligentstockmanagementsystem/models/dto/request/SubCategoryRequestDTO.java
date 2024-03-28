@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SubCategoryRequestDTO {
+public class  SubCategoryRequestDTO {
     @NotNull(message = "Sub Category name is required")
     private String subCategoryName;
 

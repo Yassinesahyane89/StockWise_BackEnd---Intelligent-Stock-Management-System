@@ -42,4 +42,22 @@ public class MainExceptionHandler {
         ResponseMessage responseMessage = new ResponseMessage(e.getMessage());
         return ResponseEntity.badRequest().body(responseMessage);
     }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ResponseMessage> handleEmailAlreadyExistsException(EmailAlreadyExistsException e){
+        ResponseMessage responseMessage = new ResponseMessage(e.getMessage());
+        return ResponseEntity.badRequest().body(responseMessage);
+    }
+
+    @ExceptionHandler(InvalidEmailOrPasswordException.class)
+    public ResponseEntity<ResponseMessage> handleInvalidEmailOrPasswordException(InvalidEmailOrPasswordException e){
+        ResponseMessage responseMessage = new ResponseMessage(e.getMessage());
+        return ResponseEntity.badRequest().body(responseMessage);
+    }
+
+    @ExceptionHandler(PasswordsDoNotMatchException.class)
+    public ResponseEntity<ResponseMessage> handlePasswordsDoNotMatchException(PasswordsDoNotMatchException e){
+        ResponseMessage responseMessage = new ResponseMessage(e.getMessage());
+        return ResponseEntity.badRequest().body(responseMessage);
+    }
 }

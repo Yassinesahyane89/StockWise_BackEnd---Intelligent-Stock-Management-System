@@ -29,11 +29,15 @@ public class ProductResponseDTO {
 
     private String brand;
 
+    private String unit;
+
     private Long subCategoryId;
 
     private Long brandId;
 
      private Long categoryId;
+
+     private Long unitId;
 
     private String status;
 
@@ -49,9 +53,11 @@ public class ProductResponseDTO {
                 .quantity(product.getQuantity())
                 .category(product.getSubCategory().getSubCategoryName())
                 .brand(product.getBrand().getName())
+                .unit(product.getUnit().getShortName())
                 .subCategoryId(product.getSubCategory().getId())
                 .brandId(product.getBrand().getId())
                 .categoryId(product.getSubCategory().getParentCategory().getId())
+                .unitId(product.getUnit().getId())
                 .status(product.getStatus() ? "ACTIVE" : "INACTIVE")
                 .build();
     }

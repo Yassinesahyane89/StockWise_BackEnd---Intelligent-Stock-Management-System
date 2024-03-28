@@ -90,4 +90,10 @@ public class ProductRestController {
         // return response
         return ResponseMessage.ok(null,"Product deleted successfully");
     }
+
+    @GetMapping
+    public ResponseEntity<?> ProductCategory(){
+
+        return ResponseMessage.ok(productService.getcatgeroWithAllProduct(), "Success");
+    }
 }

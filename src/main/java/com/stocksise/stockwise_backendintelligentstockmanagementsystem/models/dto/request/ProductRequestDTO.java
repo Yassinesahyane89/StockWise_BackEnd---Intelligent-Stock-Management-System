@@ -3,6 +3,7 @@ package com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.d
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.Brand;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.Product;
 import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.SubCategory;
+import com.stocksise.stockwise_backendintelligentstockmanagementsystem.models.entities.Unit;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,9 @@ public class ProductRequestDTO {
     @NotNull(message = "Brand Id is required")
     private Long brandId;
 
+    @NotNull(message = "Unit Id is required")
+    private Long unitId;
+
     @NotNull(message = "Status is required")
     private String status;
 
@@ -54,6 +58,11 @@ public class ProductRequestDTO {
                 .brand(
                         Brand.builder()
                                 .id(productRequestDTO.getBrandId())
+                                .build()
+                )
+                .unit(
+                        Unit.builder()
+                                .id(productRequestDTO.getUnitId())
                                 .build()
                 )
                 .status(Objects.equals(productRequestDTO.getStatus(), "Active"))

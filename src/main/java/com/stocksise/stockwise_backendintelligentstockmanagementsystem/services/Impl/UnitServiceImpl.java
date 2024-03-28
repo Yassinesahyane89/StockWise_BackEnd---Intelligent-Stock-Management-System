@@ -8,6 +8,7 @@ import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UnitServiceImpl implements UnitService {
@@ -73,5 +74,10 @@ public class UnitServiceImpl implements UnitService {
 
         // delete the unit
         unitRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Unit> filterUnitByStatus(String status) {
+        return unitRepository.findByStatus(Objects.equals(status, "ACTIVE"));
     }
 }

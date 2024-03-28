@@ -10,4 +10,5 @@ public interface UnitService {
     Unit saveUnit(Unit unit);
     Unit updateUnit(Long id, Unit unit);
     void deleteUnit(Long id);
+    List<Unit> filterUnitByStatus(String status);
 }

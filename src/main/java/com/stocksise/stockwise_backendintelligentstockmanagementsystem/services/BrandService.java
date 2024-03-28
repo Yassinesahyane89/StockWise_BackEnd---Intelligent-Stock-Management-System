@@ -10,4 +10,5 @@ public interface BrandService {
     Brand saveBrand(Brand brand);
     Brand updateBrand(Long id, Brand brand);
     void deleteBrand(Long id);
+    List<Brand> filterBrandsByStatus(String status);
 }

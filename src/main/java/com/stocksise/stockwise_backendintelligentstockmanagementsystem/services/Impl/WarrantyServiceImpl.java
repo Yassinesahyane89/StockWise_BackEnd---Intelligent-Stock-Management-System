@@ -8,6 +8,7 @@ import com.stocksise.stockwise_backendintelligentstockmanagementsystem.services.
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class WarrantyServiceImpl implements WarrantyService {
@@ -65,5 +66,10 @@ public class WarrantyServiceImpl implements WarrantyService {
 
         // delete the warranty
         warrantyRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Warranty> filterWarrantyByStatus(String status) {
+        return warrantyRepository.findByStatus(Objects.equals(status, "ACTIVE"));
     }
 }

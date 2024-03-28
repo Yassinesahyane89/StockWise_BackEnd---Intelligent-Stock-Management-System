@@ -82,6 +82,22 @@ public class WarrantyRestController {
         return ResponseMessage.ok(warrantyResponseDTO, "Warranty updated successfully");
     }
 
+    // filter warranty by status
+    @GetMapping("/filter-by-status/{status}")
+    public ResponseEntity<?> filterWarrantyByStatus(@PathVariable String status) {
+        // get the warranty by status
+        List<Warranty> warranties = warrantyService.filterWarrantyByStatus(status);
+
+        // convert warranty to warranty response dto
+        List<WarrantyResponseDTO> warrantyResponseDTOS = new ArrayList<>();
+        for(Warranty warranty : warranties) {
+            warrantyResponseDTOS.add(WarrantyResponseDTO.fromWarranty(warranty));
+        }
+
+        // return response
+        return ResponseMessage.ok(warrantyResponseDTOS, "Success");
+    }
+
     // delete warranty
     @DeleteMapping("/delete-warranty/{id}")
     public ResponseEntity<?> deleteWarranty(@PathVariable Long id) {

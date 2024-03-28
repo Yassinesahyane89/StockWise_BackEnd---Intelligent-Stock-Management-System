@@ -49,6 +49,19 @@ public class CategoryRestController {
         return ResponseMessage.ok(categoryResponseDTO, "Success");
     }
 
+    // get category by name
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getCategoryByName(@PathVariable String name) {
+        // get the category by name
+        Category category = categoryService.getCategoryByName(name);
+
+        // convert category to category response dto
+        CategoryResponseDTO categoryResponseDTO = CategoryResponseDTO.fromCategory(category);
+
+        // return response
+        return ResponseMessage.ok(categoryResponseDTO, "Success");
+    }
+
     // add category
     @PostMapping("/new-category")
     public ResponseEntity<?> addCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) {

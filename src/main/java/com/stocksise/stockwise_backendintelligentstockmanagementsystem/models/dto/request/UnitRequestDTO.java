@@ -28,7 +28,7 @@ public class UnitRequestDTO {
         return Unit.builder()
                 .name(unitRequestDTO.getUnitName())
                 .shortName(unitRequestDTO.getShortName())
-                .status(Objects.equals(unitRequestDTO.getStatus(), "Active"))
+                .status(Objects.equals(unitRequestDTO.getStatus(), "ACTIVE"))
                 .build();
     }
 }

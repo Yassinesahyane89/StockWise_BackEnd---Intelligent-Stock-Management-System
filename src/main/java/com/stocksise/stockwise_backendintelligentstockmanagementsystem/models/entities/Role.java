@@ -5,10 +5,12 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
@@ -39,4 +41,15 @@ public class Role {
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
     private LocalDate updatedAt;
+
+    public List<SimpleGrantedAuthority> getAuthorities(){
+        List<SimpleGrantedAuthority> authorities = getRolePermissions()
+                .stream()
+                .map(rolePermission -> new SimpleGrantedAuthority(rolePermission.getPermission().getName().name()))
+                .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name));
+
+        return authorities;
+    }
 }
